@@ -70,9 +70,8 @@ class _AdminPaginaState extends State<AdminPagina>
   }
 }
 
-// ════════════════════════════════════════════════════════════════════════════
+
 // ABA 1 — PEDIDOS
-// ════════════════════════════════════════════════════════════════════════════
 class _PedidosTab extends StatefulWidget {
   final PedidosService service;
   const _PedidosTab({required this.service});
@@ -181,7 +180,7 @@ class _PedidosTabState extends State<_PedidosTab> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      // ── Filters ──
+      // Filtros
       Container(
         color: Colors.amber.shade50,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -201,7 +200,7 @@ class _PedidosTabState extends State<_PedidosTab> {
         ),
       ),
 
-      // ── Orders list ──
+      // Lista de pedidos
       Expanded(
         child: _pedidos.isEmpty
             ? Center(
@@ -216,7 +215,7 @@ class _PedidosTabState extends State<_PedidosTab> {
                   final fmt =
                       '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
 
-                  // extras
+                  // Outros
                   final outros = (p['outrosSelecionados'] as List?)
                           ?.cast<String>()
                           .where((s) => s.isNotEmpty)
@@ -232,7 +231,7 @@ class _PedidosTabState extends State<_PedidosTab> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Header row
+                            // cabeçalho do pedido
                             Row(children: [
                               Icon(Icons.cake,
                                   color: Colors.amber.shade700, size: 22),
@@ -243,7 +242,7 @@ class _PedidosTabState extends State<_PedidosTab> {
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15))),
-                              // Status dropdown
+                              // Alteração do status do pedido (pronto, pendente, entregue, em preparo)
                               DropdownButton<String>(
                                 value: p['status'],
                                 underline: const SizedBox(),
@@ -306,21 +305,21 @@ class _PedidosTabState extends State<_PedidosTab> {
     ),
   ],
 ),
-                            if ((p['endereco'] as String?)?.isNotEmpty ?? false)
-                              Text('Entrega: ${p['endereco']}',
-                                  style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 12)),
-                            Text(
-                                'Sabor: ${p['sabor']}  |  Recheio: ${p['recheio']}  |  Cobertura: ${p['cobertura']}',
-                                style: const TextStyle(fontSize: 13)),
-                            if ((p['nivelAndares'] as int?) != null)
-                              Text('Andares: ${p['nivelAndares']}',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.amber.shade700)),
-                            // ── Extras (outros) ──
+              if ((p['endereco'] as String?)?.isNotEmpty ?? false)
+              Text('Entrega: ${p['endereco']}',
+              style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 12)),
+              Text(
+              'Sabor: ${p['sabor']}  |  Recheio: ${p['recheio']}  |  Cobertura: ${p['cobertura']}',
+              style: const TextStyle(fontSize: 13)),
+              if ((p['nivelAndares'] as int?) != null)
+              Text('Andares: ${p['nivelAndares']}',
+              style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.amber.shade700)),
+                            // Extras (outros)
                             if (outros.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(top: 4),
@@ -427,9 +426,7 @@ class _PedidosTabState extends State<_PedidosTab> {
   }
 }
 
-// ════════════════════════════════════════════════════════════════════════════
 // ABA 2 — CATÁLOGO
-// ════════════════════════════════════════════════════════════════════════════
 class _CatalogoTab extends StatefulWidget {
   final CatalogoService service;
   const _CatalogoTab({required this.service});
@@ -438,7 +435,7 @@ class _CatalogoTab extends StatefulWidget {
 }
 
 class _CatalogoTabState extends State<_CatalogoTab> {
-  // ── Category labels — includes 'outros' ───────────────────────────────────
+  // Categorias criadas
   static const Map<String, String> _labels = {
     'tipos':      'Tipos de Bolo',
     'tamanhos':   'Tamanhos',
@@ -461,7 +458,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
     setState(() => _opcoes = widget.service.getOpcoesComDescricao());
   }
 
-  // ── Andares pricing dialog ─────────────────────────────────────────────────
+  // Precificação de andares
   Future<void> _editarAndares() async {
     final precos = _catalogo.getPrecosAndares();
     final ctrl1 = TextEditingController(text: precos[1]!.toStringAsFixed(2));
@@ -515,7 +512,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
         ),
       );
 
-  // ── Add item dialog ────────────────────────────────────────────────────────
+  // Ação de adicionar item ao catálogo
   Future<void> _adicionar(String cat) async {
     final nomeCtrl  = TextEditingController();
     final descCtrl  = TextEditingController();
@@ -552,7 +549,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
                     labelText: 'Preço (opcional)',
                     hintText: 'Ex: 49.90'),
               ),
-              // Show tipo-specific toggles only for 'tipos'; hide for 'outros'
+              // Apenas "tipos de bolo" podem receber funcionalidades distintas como receber imagens e andares
               if (cat == 'tipos')
                 Column(children: [
                   const SizedBox(height: 16),
@@ -622,7 +619,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
     }
   }
 
-  // ── Edit item dialog ───────────────────────────────────────────────────────
+  // Alteração de item no catálogo
   Future<void> _editar(String cat, Map<String, String> item) async {
     final nomeCtrl  = TextEditingController(text: item['nome']);
     final descCtrl  = TextEditingController(text: item['descricao']);
@@ -751,7 +748,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        // ── Andares pricing card ──────────────────────────────────────────
+        // Alterar preço de andares de bolo
         Card(
           child: ListTile(
             leading: const Icon(Icons.layers, color: Colors.amber),
@@ -762,20 +759,17 @@ class _CatalogoTabState extends State<_CatalogoTab> {
           ),
         ),
         const SizedBox(height: 16),
-
-        // ── One card per category ─────────────────────────────────────────
         ..._labels.entries.map((e) {
           final chave = e.key;
           final label = e.value;
           final itens = _opcoes[chave] ?? [];
 
-          // Pick accent colour: 'outros' gets a teal accent to stand out
+          // Cor mais acentuada em "outros" para influenciar compra
           final isOutros = chave == 'outros';
           final accentColor =
               isOutros ? Colors.teal : Colors.amber.shade800;
           final accentLight =
               isOutros ? Colors.teal.shade50 : Colors.amber.shade50;
-
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             shape: RoundedRectangleBorder(
@@ -785,7 +779,6 @@ class _CatalogoTabState extends State<_CatalogoTab> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Section header
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -809,7 +802,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
                           ),
                         ]),
 
-                    // Helper text for 'outros'
+                    // subtexto abaixo de adicionais em "outros"
                     if (isOutros) ...[
                       Text(
                         'Itens exibidos como adicionais opcionais na tela do cliente.',
@@ -846,7 +839,7 @@ class _CatalogoTabState extends State<_CatalogoTab> {
 
                     ...itens.map((item) => ListTile(
                           contentPadding: EdgeInsets.zero,
-                          // Show image thumbnail for 'outros' items
+                          // mostra a imagem explícita em "outros"
                           leading: isOutros &&
                                   (item['imagem'] ?? '').isNotEmpty &&
                                   File(item['imagem']!).existsSync()
@@ -905,9 +898,8 @@ class _CatalogoTabState extends State<_CatalogoTab> {
   }
 }
 
-// ════════════════════════════════════════════════════════════════════════════
 // ABA 3 — USUÁRIOS
-// ════════════════════════════════════════════════════════════════════════════
+
 class _UsuariosTab extends StatefulWidget {
   final AuthService service;
   const _UsuariosTab({required this.service});
@@ -918,6 +910,7 @@ class _UsuariosTab extends StatefulWidget {
 class _UsuariosTabState extends State<_UsuariosTab> {
   List<Map<String, dynamic>> get _users => widget.service.listarTodos();
 
+  // Exclui usuário
   Future<void> _deletar(String email) async {
     final ok = await showDialog<bool>(
       context: context,
@@ -941,6 +934,7 @@ class _UsuariosTabState extends State<_UsuariosTab> {
     }
   }
 
+// Conta do admin - não pode ser deletada e nem acessada pelo "login"; apenas pelo botão "admin"
   Future<void> _toggleAdmin(Map<String, dynamic> u) async {
     await widget.service
         .atualizarUsuario(u['email'], {'isAdmin': !(u['isAdmin'] == true)});
