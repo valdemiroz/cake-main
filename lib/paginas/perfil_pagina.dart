@@ -7,7 +7,7 @@ import 'pepito.dart';
 import 'suporte.dart';
 import 'bolos_pagina.dart';
 
-// ── MENU (com botão Admin) ─────────────────────────────────────────────────
+// Menu lateral
 void _abrirMenu(BuildContext context) {
   showGeneralDialog(
     context: context,
@@ -28,9 +28,6 @@ void _abrirMenu(BuildContext context) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════════════════
-// WIDGET DO MENU
-// ════════════════════════════════════════════════════════════════════════════
 class _MenuContent extends StatefulWidget {
   final BuildContext context;
   const _MenuContent({required this.context});
@@ -45,6 +42,7 @@ class _MenuContentState extends State<_MenuContent> {
     bool hide = true;
     String? erro;
 
+// Caixa de admin (quando aberta)
     await showDialog(
       context: ctx,
       builder: (dCtx) => StatefulBuilder(
@@ -116,7 +114,7 @@ class _MenuContentState extends State<_MenuContent> {
       setD(() => setErro('Senha incorreta. Tente novamente.'));
     }
   }
-
+// Demais conteúdos do menu
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -128,7 +126,7 @@ class _MenuContentState extends State<_MenuContent> {
             color: Colors.pink,
             borderRadius: BorderRadius.circular(20),
             image: DecorationImage(
-                image: AssetImage('assets/images/confetti.png'), fit: BoxFit.cover),
+                image: AssetImage('assets/images/confetti.png'), fit: BoxFit.cover), 
           ),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text('CONFIGURAÇÕES',
@@ -191,9 +189,7 @@ class _MenuContentState extends State<_MenuContent> {
       );
 }
 
-// ════════════════════════════════════════════════════════════════════════════
-// PERFIL PAGINA
-// ════════════════════════════════════════════════════════════════════════════
+// Página do perfil
 class PerfilPagina extends StatefulWidget {
   @override
   State<PerfilPagina> createState() => _PerfilPaginaState();
