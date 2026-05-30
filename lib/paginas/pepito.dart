@@ -4,7 +4,7 @@ import '/dados/auth_service.dart';
 import 'bolos_pagina.dart';
 import '/conta/pedidos_pagina.dart';
 import 'suporte.dart';
-import '/paginas/admin_paginas/adm.dart'; // ← admin
+import '/paginas/admin_paginas/adm.dart';
 
 class Pepito extends StatefulWidget {
   const Pepito({super.key});
@@ -14,7 +14,7 @@ class Pepito extends StatefulWidget {
 }
 
 class _PepitoState extends State<Pepito> {
-  // ignore: unused_field
+  // ignore: unused_field (Ignora função não-usada)
   final _auth = AuthService();
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, dynamic>> _mensagens = [];
@@ -43,7 +43,7 @@ class _PepitoState extends State<Pepito> {
     });
     _controller.clear();
 
-    // Simula pensamento
+    // Simula o pensamento 
     await Future.delayed(const Duration(milliseconds: 800));
 
     String resposta = _gerarResposta(texto.toLowerCase());
@@ -54,6 +54,7 @@ class _PepitoState extends State<Pepito> {
     });
   }
 
+  // Possíveis respostas do Pepito (se houver um item de cada)
   String _gerarResposta(String msg) {
     if (msg.contains("contato") || msg.contains("whatsapp") || msg.contains("conversar")) {
       return "Caso você queira um contato com a empresa, aqui vai o número!.\n\n"
@@ -91,10 +92,12 @@ class _PepitoState extends State<Pepito> {
       "Há muitas opções de montagem, desde que você marque todas as categorias (tipo de bolo, tamanho, recheio, cobertura, sabor e adicionais), que podem ser desfrutadas!";
     }
 
+    // Caso fora dos itens listados acima
     return "Desculpe, tente elaborar uma pergunta relacionada ao App. No que deseja? \n\n"
           "Quer ajuda com:\n• Fazer um pedido?\n• Acompanhar seus pedidos?\n• Cancelamento?\n• Formas de pagamento?";
   }
 
+  // Pepito como uma "mini I.A." simulando conversa
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +116,7 @@ class _PepitoState extends State<Pepito> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: EdgeInsets.only(top: 8),
-                        child: Text("Pepito está digitando...", style: TextStyle(color: Colors.grey)),
+                        child: Text("Pepito está digitando...", style: TextStyle(color: Colors.grey)), 
                       ),
                     );
                   }
@@ -126,7 +129,7 @@ class _PepitoState extends State<Pepito> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (!isUser) ...[
-                        Image.asset('assets/images/pepitoz.png', width: 42, height: 42),
+                        Image.asset('assets/images/pepitoz.png', width: 42, height: 42), // Foto do Pepito
                         const SizedBox(width: 8),
                       ],
                       Flexible(
@@ -184,6 +187,7 @@ class _PepitoState extends State<Pepito> {
     );
   }
 
+  // Barra do aplicativo (topo)
   AppBar _appBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.pink,
@@ -229,9 +233,7 @@ class _PepitoState extends State<Pepito> {
   }
 }
 
-// ════════════════════════════════════════════════════════════════════════════
-// WIDGET DO MENU — extraído para StatefulWidget para gerenciar o campo senha
-// ════════════════════════════════════════════════════════════════════════════
+// Menu lateral - lógica
 class _MenuContent extends StatefulWidget {
   final BuildContext context;
   const _MenuContent({required this.context});
@@ -240,8 +242,8 @@ class _MenuContent extends StatefulWidget {
   State<_MenuContent> createState() => _MenuContentState();
 }
 
+  // Processo de admin com senha
 class _MenuContentState extends State<_MenuContent> {
-  // ── Diálogo de senha admin ─────────────────────────────────────────────
   Future<void> _pedirSenhaAdmin(BuildContext ctx) async {
     final ctrl = TextEditingController();
     bool hide  = true;
@@ -318,12 +320,11 @@ class _MenuContentState extends State<_MenuContent> {
       setD(() => setErro('Senha incorreta. Tente novamente.'));
     }
   }
-
+// demais itens do menu lateral
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        // ── Caixa principal do menu ────────────────────────────────────────
         Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: EdgeInsets.all(20),
@@ -354,7 +355,7 @@ class _MenuContentState extends State<_MenuContent> {
 
             Divider(color: Colors.white38, height: 24),
 
-            // ── BOTÃO ADMIN ──────────────────────────────────────────────
+            // Botão admin
             TextButton.icon(
               onPressed: () => _pedirSenhaAdmin(context),
               icon: Icon(Icons.admin_panel_settings, color: Colors.amber.shade200, size: 20),
@@ -373,7 +374,7 @@ class _MenuContentState extends State<_MenuContent> {
             child: Image.asset('assets/images/bolo.png', width: 250, height: 250)),
         SizedBox(height: 16),
 
-        // ── Botão acessar conta ──────────────────────────────────────────
+        // Botão de acessar conta
         Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -390,7 +391,6 @@ class _MenuContentState extends State<_MenuContent> {
       ]),
     );
   }
-
   Widget _btn(String label, VoidCallback action) => TextButton(
     onPressed: () { Navigator.pop(context); action(); },
     child: Text(label,
