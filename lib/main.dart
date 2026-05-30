@@ -3,7 +3,7 @@ import 'paginas/perfil_pagina.dart'; // página de perfil
 import 'package:url_launcher/url_launcher.dart'; // permite rodar links globais
 import 'paginas/bolos_pagina.dart'; // página de montagem dos pedidos
 import 'conta/pedidos_pagina.dart'; // página de pedidos do usuário
-import 'paginas/pepito.dart'; // mini I.A. "Pepito"
+import 'paginas/pepito.dart'; // mini I.A. - "Pepito"
 import 'paginas/suporte.dart'; // página de suporte
 import 'package:hive_flutter/hive_flutter.dart'; // banco de dados - HIVE
 import 'dados/auth_service.dart'; // banco de dados - autenticação do usuário
