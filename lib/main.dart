@@ -1,19 +1,21 @@
-import 'package:flutter/material.dart';
-import 'paginas/perfil_pagina.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'paginas/bolos_pagina.dart';
-import 'conta/pedidos_pagina.dart';
-import 'paginas/pepito.dart';
-import 'paginas/suporte.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'dados/auth_service.dart';
-import 'dados/catalogo_service.dart';
-import 'paginas/admin_paginas/adm.dart'; // ← admin
+import 'package:flutter/material.dart'; // acesso ao material decorativo do FLutter
+import 'paginas/perfil_pagina.dart'; // página de perfil
+import 'package:url_launcher/url_launcher.dart'; // permite rodar links globais
+import 'paginas/bolos_pagina.dart'; // página de montagem dos pedidos
+import 'conta/pedidos_pagina.dart'; // página de pedidos do usuário
+import 'paginas/pepito.dart'; // mini I.A. "Pepito"
+import 'paginas/suporte.dart'; // página de suporte
+import 'package:hive_flutter/hive_flutter.dart'; // banco de dados - HIVE
+import 'dados/auth_service.dart'; // banco de dados - autenticação do usuário
+import 'dados/catalogo_service.dart'; // banco de dados - bolos e demais produtos
+import 'paginas/admin_paginas/adm.dart'; // página de admin
 
 void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
+  
+   // Aqui é onde carregam os usuários, pedidos e catálogo antes mesmo do usuário entrar no App
   await Hive.initFlutter();
-
   await Hive.openBox('usuarios');
   await Hive.openBox('pedidos');   
   await Hive.openBox('catalogo');
@@ -41,7 +43,7 @@ class TelaCake extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ── APPBAR ────────────────────────────────────────────────────────────
+      // Barra do aplicativo (Topo da tela)
       appBar: AppBar(
         backgroundColor: Colors.pink,
         toolbarHeight: 80.0,
@@ -57,7 +59,7 @@ class TelaCake extends StatelessWidget {
           padding: EdgeInsets.only(left: 16.0, right: 8.0),
           icon: Icon(Icons.person, color: Colors.white, size: 40),
           onPressed: () =>
-              Navigator.push(context, MaterialPageRoute(builder: (_) => PerfilPagina())),
+              Navigator.push(context, MaterialPageRoute(builder: (_) => PerfilPagina())), // Botão de perfil
         ),
         actions: [
           IconButton(
@@ -68,13 +70,13 @@ class TelaCake extends StatelessWidget {
         ],
       ),
 
-      // ── BODY ──────────────────────────────────────────────────────────────
+      // Corpo da página
       body: Container(
         decoration: BoxDecoration(
           color: Colors.pink.shade50,
           image: DecorationImage(
               opacity: 0.5,
-              image: AssetImage('assets/images/confetti.png'),
+              image: AssetImage('assets/images/confetti.png'), // fundo da página
               fit: BoxFit.cover),
         ),
         child: Column(
@@ -86,11 +88,11 @@ class TelaCake extends StatelessWidget {
                     padding: EdgeInsets.only(top: 20),
                     child: Text('CAKE MAIN',
                         style: TextStyle(
-                            shadows: [Shadow(offset: Offset(1, 5), blurRadius: 0, color: Colors.pink.shade500)],
+                            shadows: [Shadow(offset: Offset(1, 5), blurRadius: 0, color: Colors.pink.shade500)], 
                             color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.bold)),
-                  ),
+                  ), // título da tela
                   SizedBox(height: 40),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -101,12 +103,14 @@ class TelaCake extends StatelessWidget {
                       childAspectRatio: 0.75,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
+
+                      // Botões da tela - Fazer pedido, Ver pedidos, Suporte e Pepito
                       children: [
                         _buildButtonCard(context, 'Faça seu bolo', 'assets/images/icon1.png',
-                            () => Navigator.push(context, MaterialPageRoute(builder: (_) => BolosPagina()))),
+                            () => Navigator.push(context, MaterialPageRoute(builder: (_) => BolosPagina()))), 
                         _buildButtonCard(context, 'Ver pedidos', 'assets/images/icon2.png',
                             () => Navigator.push(context, MaterialPageRoute(builder: (_) => PedidosPagina()))),
-                        _buildButtonCard(context, 'Nosso Contato', 'assets/images/icon3.png',
+                        _buildButtonCard(context, 'Suporte', 'assets/images/icon3.png',
                             () => Navigator.push(context, MaterialPageRoute(builder: (_) => Suporte()))),
                         _buildButtonCard(context, 'Dúvidas/FAQ', 'assets/images/icon4.png',
                             () => Navigator.push(context, MaterialPageRoute(builder: (_) => Pepito()))),
@@ -117,7 +121,7 @@ class TelaCake extends StatelessWidget {
               ),
             ),
 
-            // ── RODAPÉ ──────────────────────────────────────────────────────
+            // Rodapé (parte inferior da tela)
             Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -129,23 +133,23 @@ class TelaCake extends StatelessWidget {
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   IconButton(
                     icon: Icon(Icons.message, color: Colors.white, size: 30),
-                    onPressed: () => _launchURLGlobal(context, 'https://wa.me/5551991628190'),
+                    onPressed: () => _launchURLGlobal(context, 'https://wa.me/5551991628190'), // Link do whatsapp
                   ),
                   SizedBox(width: 20),
                   IconButton(
                     icon: Icon(Icons.facebook, color: Colors.white, size: 30),
-                    onPressed: () => _launchURLGlobal(context, 'https://www.facebook.com/lipao.yt.31'),
+                    onPressed: () => _launchURLGlobal(context, 'https://www.facebook.com/lipao.yt.31'), // Link do facebook
                   ),
                   SizedBox(width: 20),
                   IconButton(
                     icon: Icon(Icons.camera_alt, color: Colors.white, size: 30),
-                    onPressed: () => _launchURLGlobal(context, 'https://www.instagram.com/1whitedud/'),
+                    onPressed: () => _launchURLGlobal(context, 'https://www.instagram.com/1whitedud/'), // Link do instagram
                   ),
                   SizedBox(width: 20),
                   IconButton(
                     icon: Icon(Icons.play_arrow, color: Colors.white, size: 30),
                     onPressed: () =>
-                        _launchURLGlobal(context, 'https://www.youtube.com/@Whatdoiputhereinthisthing'),
+                        _launchURLGlobal(context, 'https://www.youtube.com/@Whatdoiputhereinthisthing'), // Link do youtube
                   ),
                 ]),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -162,7 +166,7 @@ class TelaCake extends StatelessWidget {
     );
   }
 
-  // ── MENU (com botão Admin) ─────────────────────────────────────────────────
+  // Menu lateral (canto superior direito da tela)
   void _abrirMenu(BuildContext context) {
     showGeneralDialog(
       context: context,
@@ -183,8 +187,7 @@ class TelaCake extends StatelessWidget {
     );
   }
 }
-
-// MENU DO TOPO DA TELA
+// Abertura do menu
 class _MenuContent extends StatefulWidget {
   final BuildContext context;
   const _MenuContent({required this.context});
@@ -194,7 +197,8 @@ class _MenuContent extends StatefulWidget {
 }
 
 class _MenuContentState extends State<_MenuContent> {
-  // ── Diálogo de senha admin ─────────────────────────────────────────────
+  
+  // Senha do admin - lógica
   Future<void> _pedirSenhaAdmin(BuildContext ctx) async {
     final ctrl = TextEditingController();
     bool hide  = true;
@@ -276,7 +280,9 @@ class _MenuContentState extends State<_MenuContent> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        // ── Caixa principal do menu ────────────────────────────────────────
+        
+        // Outros itens do menu - Fazer pedido, Ver pedidos, Pepito, Suporte e Acessar conta
+        
         Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: EdgeInsets.all(20),
@@ -284,7 +290,7 @@ class _MenuContentState extends State<_MenuContent> {
             color: Colors.pink,
             borderRadius: BorderRadius.circular(20),
             image: DecorationImage(
-                image: AssetImage('assets/images/confetti.png'), fit: BoxFit.cover),
+                image: AssetImage('assets/images/confetti.png'), fit: BoxFit.cover), // Fundo da caixa de menu
           ),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text('CONFIGURAÇÕES',
@@ -296,6 +302,7 @@ class _MenuContentState extends State<_MenuContent> {
                     decoration: TextDecoration.none)),
             SizedBox(height: 16),
 
+            // Itens do menu decorado
             _btn('Pepito IA',
                 () => Navigator.push(context, MaterialPageRoute(builder: (_) => Pepito()))),
             _btn('Seus pedidos',
@@ -307,7 +314,8 @@ class _MenuContentState extends State<_MenuContent> {
 
             Divider(color: Colors.white38, height: 24),
 
-            // ── BOTÃO ADMIN ──────────────────────────────────────────────
+            // Botão do Admin
+            
             TextButton.icon(
               onPressed: () => _pedirSenhaAdmin(context),
               icon: Icon(Icons.admin_panel_settings, color: Colors.amber.shade200, size: 20),
@@ -323,10 +331,11 @@ class _MenuContentState extends State<_MenuContent> {
 
         SizedBox(height: 16),
         Opacity(opacity: 0.8,
-            child: Image.asset('assets/images/bolo.png', width: 250, height: 250)),
+            child: Image.asset('assets/images/bolo.png', width: 250, height: 250)), // Bolo decorativo no menu
         SizedBox(height: 16),
 
-        // ── Botão acessar conta ──────────────────────────────────────────
+        // Botão de acessar conta
+        
         Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -351,7 +360,7 @@ class _MenuContentState extends State<_MenuContent> {
   );
 }
 
-// LINKS GLOBAIS
+// LINKS GLOBAIS - Lógica
 void _launchURLGlobal(BuildContext context, String url) async {
   final Uri uri = Uri.parse(url);
   try {
