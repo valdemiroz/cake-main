@@ -207,7 +207,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
               ]),
         ),
       );
-
+// Lógica da caixa de pedido
   Widget _listaPedidos() => Container(
         color: Colors.pink.shade50,
         child: RefreshIndicator(
@@ -223,13 +223,14 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                   '${dt.month.toString().padLeft(2, '0')}/${dt.year}';
               final bool podeCancelar = p['status'] == 'Pendente';
 
-              // Extras
+              // Outros
               final outros = (p['outrosSelecionados'] as List?)
                       ?.cast<String>()
                       .where((s) => s.isNotEmpty)
                       .toList() ??
                   [];
 
+          // Caixa do pedido realizado
               return Container(
                 margin: const EdgeInsets.only(bottom: 14),
                 decoration: BoxDecoration(
@@ -247,7 +248,6 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ── Header ──────────────────────────────────────────
                         Row(children: [
                           const Icon(Icons.cake, color: Colors.pink, size: 26),
                           const SizedBox(width: 8),
@@ -259,8 +259,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.pink.shade700),
                             ),
-                          ),
-                          Container(
+                          ),Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
@@ -274,12 +273,14 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                           ),
                         ]),
                         const SizedBox(height: 8),
-
+          
                         Text(
                           'Sabor: ${p['sabor']}  |  Recheio: ${p['recheio']}  |  Cobertura: ${p['cobertura']}',
                           style: TextStyle(
                               color: Colors.grey.shade600, fontSize: 13),
                         ),
+
+                // Nível de andares
                         if ((p['nivelAndares'] as int?) != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
@@ -289,8 +290,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600)),
                           ),
-
-                        // ── Extras row ────────────────────────────────────────
+              // Outros
                         if (outros.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
@@ -312,7 +312,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                               ],
                             ),
                           ),
-
+            // Observação
                         if ((p['observacoes'] as String?)?.isNotEmpty ?? false)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
@@ -321,6 +321,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                                     color: Colors.grey.shade500,
                                     fontSize: 12)),
                           ),
+            // Endereço de entrega
                         if ((p['endereco'] as String?)?.isNotEmpty ?? false)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
@@ -330,7 +331,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
                                     fontSize: 12)),
                           ),
 
-                        // ── Images ────────────────────────────────────────────
+                        // Imagem
                         if (_temImagensValidas(p))
                           Padding(
                             padding: const EdgeInsets.only(top: 12),
@@ -394,7 +395,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
 
                         const SizedBox(height: 12),
 
-                        // ── Price + cancel ────────────────────────────────────
+                        // Preço
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -428,7 +429,7 @@ class _PedidosPaginaState extends State<PedidosPagina> {
           ),
         ),
       );
-
+// Barra do aplicativo (topo)
   AppBar _appBar(BuildContext context) => AppBar(
         backgroundColor: Colors.pink,
         toolbarHeight: 80, elevation: 5,
