@@ -24,8 +24,7 @@ void main() async {
   await AuthService().criarAdminPadrao();
   await CatalogoService().inicializar();
 
-  runApp(CakeApp());
-}
+  runApp(CakeApp());}
 
 class CakeApp extends StatelessWidget {
   @override
@@ -34,10 +33,7 @@ class CakeApp extends StatelessWidget {
       title: 'Cake Main',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.pink),
-      home: TelaCake(),
-    );
-  }
-}
+      home: TelaCake(),);}}
 
 class TelaCake extends StatelessWidget {
   @override
@@ -53,8 +49,7 @@ class TelaCake extends StatelessWidget {
           child: Text('Seja bem vindo!',
               style: TextStyle(
                   shadows: [Shadow(offset: Offset(2, 1), blurRadius: 0, color: Colors.black)],
-                  color: Colors.white)),
-        ),
+                  color: Colors.white)),),
         leading: IconButton(
           padding: EdgeInsets.only(left: 16.0, right: 8.0),
           icon: Icon(Icons.person, color: Colors.white, size: 40),
@@ -65,10 +60,7 @@ class TelaCake extends StatelessWidget {
           IconButton(
             padding: EdgeInsets.only(right: 16.0, left: 8.0),
             icon: Icon(Icons.list, color: Colors.white, size: 45),
-            onPressed: () => _abrirMenu(context),
-          ),
-        ],
-      ),
+            onPressed: () => _abrirMenu(context),),],),
 
       // Corpo da página
       body: Container(
@@ -77,8 +69,7 @@ class TelaCake extends StatelessWidget {
           image: DecorationImage(
               opacity: 0.5,
               image: AssetImage('assets/images/confetti.png'), // fundo da página
-              fit: BoxFit.cover),
-        ),
+              fit: BoxFit.cover),),
         child: Column(
           children: [
             Expanded(
@@ -86,13 +77,12 @@ class TelaCake extends StatelessWidget {
                 child: Column(children: [
                   Padding(
                     padding: EdgeInsets.only(top: 20),
-                    child: Text('CAKE MAIN',
+                    child: Text('CAKE MAIN', // título da tela
                         style: TextStyle(
                             shadows: [Shadow(offset: Offset(1, 5), blurRadius: 0, color: Colors.pink.shade500)], 
                             color: Colors.white,
                             fontSize: 40,
-                            fontWeight: FontWeight.bold)),
-                  ), // título da tela
+                            fontWeight: FontWeight.bold)),),
                   SizedBox(height: 40),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -113,13 +103,8 @@ class TelaCake extends StatelessWidget {
                         _buildButtonCard(context, 'Suporte', 'assets/images/icon3.png',
                             () => Navigator.push(context, MaterialPageRoute(builder: (_) => Suporte()))),
                         _buildButtonCard(context, 'Dúvidas/FAQ', 'assets/images/icon4.png',
-                            () => Navigator.push(context, MaterialPageRoute(builder: (_) => Pepito()))),
-                      ],                    ),
-                  ),
-                  SizedBox(height: 40),
-                ]),
-              ),
-            ),
+                            () => Navigator.push(context, MaterialPageRoute(builder: (_) => Pepito()))),],),),
+                  SizedBox(height: 40),]),),),
 
             // Rodapé (parte inferior da tela)
             Container(
@@ -156,15 +141,7 @@ class TelaCake extends StatelessWidget {
                   Icon(Icons.copyright, color: Colors.white, size: 16),
                   SizedBox(width: 5),
                   Text('CakeMain 2026, todos os direitos reservados.',
-                      style: TextStyle(color: Colors.white, fontSize: 12)),
-                ]),
-              ]),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+                      style: TextStyle(color: Colors.white, fontSize: 12)),]),]),),],),),);}
 
   // Menu lateral (canto superior direito da tela)
   void _abrirMenu(BuildContext context) {
@@ -239,9 +216,7 @@ class _MenuContentState extends State<_MenuContent> {
                     borderSide: BorderSide(color: Colors.amber.shade700, width: 2)),
                 errorText: erro,
               ),
-              onSubmitted: (_) => _validarSenha(ctrl.text, dCtx, ctx, setD, (e) => erro = e),
-            ),
-          ]),
+              onSubmitted: (_) => _validarSenha(ctrl.text, dCtx, ctx, setD, (e) => erro = e),),]),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(dCtx),
@@ -251,14 +226,8 @@ class _MenuContentState extends State<_MenuContent> {
                   backgroundColor: Colors.amber.shade700,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
               onPressed: () => _validarSenha(ctrl.text, dCtx, ctx, setD, (e) => erro = e),
-              child: Text('Entrar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+              child: Text('Entrar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),),],),),);}
+  
   void _validarSenha(
     String senha,
     BuildContext dialogCtx,
@@ -276,13 +245,11 @@ class _MenuContentState extends State<_MenuContent> {
     }
   }
 
+  // Outros itens do menu - Fazer pedido, Ver pedidos, Pepito, Suporte e Acessar conta
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
-        
-        // Outros itens do menu - Fazer pedido, Ver pedidos, Pepito, Suporte e Acessar conta
-        
         Container(
           width: MediaQuery.of(context).size.width * 0.85,
           padding: EdgeInsets.all(20),
@@ -324,14 +291,13 @@ class _MenuContentState extends State<_MenuContent> {
                       fontSize: 20,
                       decoration: TextDecoration.none,
                       color: Colors.amber.shade200,
-                      fontWeight: FontWeight.w700)),
-            ),
-          ]),
-        ),
-
+                      fontWeight: FontWeight.w700)),),]),),
+        
         SizedBox(height: 16),
         Opacity(opacity: 0.8,
-            child: Image.asset('assets/images/bolo.png', width: 250, height: 250)), // Bolo decorativo no menu
+                
+        child: Image.asset('assets/images/bolo.png', width: 250, height: 250)), // Bolo decorativo no menu
+        
         SizedBox(height: 16),
 
         // Botão de acessar conta
@@ -343,15 +309,9 @@ class _MenuContentState extends State<_MenuContent> {
           child: TextButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => PerfilPagina()));
-            },
+              Navigator.push(context, MaterialPageRoute(builder: (_) => PerfilPagina()));},
             child: Text('Acessar sua conta',
-                style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),
-          ),
-        ),
-      ]),
-    );
-  }
+                style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),),),]),);}
 
   Widget _btn(String label, VoidCallback action) => TextButton(
     onPressed: () { Navigator.pop(context); action(); },
@@ -372,16 +332,15 @@ void _launchURLGlobal(BuildContext context, String url) async {
   } catch (e) {
     debugPrint('Erro ao abrir URL: $e');
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Erro ao abrir o link')));
-  }
-}
+        .showSnackBar(SnackBar(content: Text('Erro ao abrir o link'))); }}
+
+// Construção dos botões da tela inicial (fazer pedido, ver pedidos, suporte e dúvidas)
 
 Widget _buildButtonCard(
   BuildContext context,
   String label,
   String imagePath,
-  VoidCallback onTap,
-) {
+  VoidCallback onTap,) {
   final larguraTela = MediaQuery.of(context).size.width;
 
   return GestureDetector(
@@ -390,8 +349,7 @@ Widget _buildButtonCard(
       builder: (context, constraints) {
         return Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
+          children: [SizedBox(
               height: 50,
               child: Center(
                 child: Text(
@@ -400,20 +358,13 @@ Widget _buildButtonCard(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(2, 1),
-                        blurRadius: 0,
-                        color: Colors.pink.shade500,
-                      ),
-                    ],
+                    shadows: [Shadow(
+                    offset: const Offset(2, 1),
+                    blurRadius: 0,
+                    color: Colors.pink.shade500,),],
                     fontSize: larguraTela < 400 ? 16 : 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+                    color: Colors.white,),),),),
 
             const SizedBox(height: 10),
 
@@ -423,14 +374,11 @@ Widget _buildButtonCard(
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 255, 188, 143),
                   borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
+                  boxShadow: [BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),),],),
+                
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(
@@ -441,17 +389,6 @@ Widget _buildButtonCard(
                       errorBuilder: (_, __, ___) => const Center(
                         child: Icon(
                           Icons.image_not_supported,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    ),
+                          color: Colors.grey,),),),),),),),],);},),
   );
 }
