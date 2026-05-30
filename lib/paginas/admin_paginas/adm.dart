@@ -988,7 +988,7 @@ class _UsuariosTabState extends State<_UsuariosTab> {
                   trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                     Tooltip(
                       message:
-                          isAdmin ? 'Remover admin' : 'Tornar admin',
+                          isAdmin ? 'Remover admin' : 'Tornar admin', // Funcionalidades não usadas (uma pretensão de que "certos" usuários do login pudessem acessar o botão "admin", enquanto para outros, é restrito.)
                       child: IconButton(
                         icon: Icon(Icons.admin_panel_settings,
                             color: isAdmin ? Colors.amber : Colors.grey),
