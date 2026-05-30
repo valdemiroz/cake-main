@@ -9,7 +9,7 @@ class CatalogoService {
 
   Box get _box => Hive.box(_boxName);
 
-  // ── Checks for tipo properties ─────────────────────────────────────────
+  // Tipos de bolo - registra se é bolo de andar ou não
   bool isBoloDeAndar(String nomeTipo) {
     final tipos = getOpcoesComDescricao()['tipos'] ?? [];
     for (final item in tipos) {
@@ -20,7 +20,8 @@ class CatalogoService {
     }
     return false;
   }
-
+  
+// Tipos de bolo - registra se pode colocar imagens ou não
   bool podeUsarImagens(String nomeTipo) {
     final tipos = getOpcoesComDescricao()['tipos'] ?? [];
     for (final item in tipos) {
@@ -32,7 +33,7 @@ class CatalogoService {
     return false;
   }
 
-  // ── Default catalogue data ─────────────────────────────────────────────
+  // Dados padrões do catálogo
   static const Map<String, List<Map<String, String>>> _defaults = {
     'tipos': [
       {'nome': 'Tradicional', 'descricao': 'O clássico bolo em camadas, coberto e recheado.', 'imagem': '', 'preco': '', 'boloDeAndar': 'false', 'podeUsarImagens': 'false'},
@@ -69,11 +70,11 @@ class CatalogoService {
       {'nome': 'Maracujá',     'descricao': 'Recheio cítrico de maracujá.',                 'imagem': '', 'preco': '', 'boloDeAndar': 'false', 'podeUsarImagens': 'false'},
       {'nome': 'Limão',        'descricao': 'Recheio de creme de limão siciliano.',         'imagem': '', 'preco': '', 'boloDeAndar': 'false', 'podeUsarImagens': 'false'},
     ],
-    // ── NEW: Outros (extras / add-ons) ─────────────────────────────────────
+    // Outros
     'outros': [],
   };
 
-  // ── Andares pricing ────────────────────────────────────────────────────
+  // Precificação dos andares de bolo
   Map<int, double> getPrecosAndares() {
     final dados = _box.get(_andaresKey);
     if (dados is Map) {
@@ -103,13 +104,13 @@ class CatalogoService {
     return getPrecosAndares()[andar] ?? 0;
   }
 
-  // ── Initialisation ─────────────────────────────────────────────────────
+// Inicializa o registro dos dados alterados pelo admin no "adm.dart"
   Future<void> inicializar() async {
     if (!_box.containsKey(_key)) {
       await _box.put(_key, _deepCopy(_defaults));
       return;
     }
-    // Ensure the 'outros' key exists in already-initialised boxes
+    // "outros" ainda existe e fica invisível, mas torna-se visível conforme itens são adicionados
     final data = _box.get(_key) as Map? ?? {};
     if (!data.containsKey('outros')) {
       data['outros'] = <Map<String, String>>[];
@@ -127,7 +128,7 @@ class CatalogoService {
         MapEntry(key, list.map((item) => Map<String, String>.from(item)).toList()));
   }
 
-  // ── Read helpers ───────────────────────────────────────────────────────
+  // descrição dos itens
   Map<String, List<String>> getOpcoes() {
     final data = _box.get(_key) as Map? ?? {};
     final Map<String, List<String>> result = {};
@@ -156,7 +157,6 @@ class CatalogoService {
     return result;
   }
 
-  /// Returns items in the 'outros' category as full maps.
   List<Map<String, String>> getOutros() {
     return getOpcoesComDescricao()['outros'] ?? [];
   }
@@ -175,7 +175,7 @@ class CatalogoService {
     return null;
   }
 
-  // ── Write helpers ──────────────────────────────────────────────────────
+  // Adicão de itens - elaboração do bolo
   Future<void> adicionarItem(
     String categoria,
     String nome,
@@ -198,6 +198,7 @@ class CatalogoService {
     await _box.put(_key, opcoes);
   }
 
+  // Atualiza os itens do catálogo
   Future<void> atualizarItem(
     String categoria,
     String nomeAntigo,
@@ -224,7 +225,7 @@ class CatalogoService {
       await _box.put(_key, opcoes);
     }
   }
-
+// Remove o item da categoria
   Future<void> removerItem(String categoria, String nome) async {
     final opcoes = getOpcoesComDescricao();
     final lista = opcoes[categoria];
