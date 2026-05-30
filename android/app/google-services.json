@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901232338995",
+    "project_id": "cakemain",
+    "storage_bucket": "cakemain.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901232338995:android:c9b0277be504303bcadb46",
+        "android_client_info": {
+          "package_name": "com.example.cakemain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu8KoP6B9jctLxn_SB2tNVdsUahJjtVRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
