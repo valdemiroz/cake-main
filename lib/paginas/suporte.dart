@@ -27,12 +27,14 @@ class _SuporteState extends State<Suporte> {
   Future<void> abrirMaps() async {
     final Uri url = Uri.parse(
       'https://www.google.com/maps/place/QI+Faculdade+e+Escola+T%C3%A9cnica+-+Canoas/@-29.9041797,-51.1788828,19z/data=!4m15!1m8!3m7!1s0x95197aa7ee67b891:0x39995d5fc0419785!2sAv.+Victor+Barreto+-+Centro,+Canoas+-+RS,+92010-000!3b1!8m2!3d-29.9135048!4d-51.1821502!16s%2Fg%2F1ymx70qr2!3m5!1s0x95197aa082c34d17:0x9f37f87b90b37665!8m2!3d-29.9041481!4d-51.1781234!16s%2Fg%2F11gzt7wnp?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D',
-    ); // coloque a localização correta
+    ); // Localização da Faculdade & Escola técnica QI
 
     if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+      await launchUrl(url, mode: LaunchMode.externalApplication); // Abrir URL do Google Maps
     }
   }
+
+  // Barra do aplicativo (topo)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,13 +46,13 @@ class _SuporteState extends State<Suporte> {
       title: Center(child: Text('Central de Suporte', style: TextStyle(shadows: [Shadow(offset: Offset(2, 1),blurRadius: 0,color: Colors.black,),],color: Colors.white),)),
       leading: IconButton(padding: EdgeInsets.only(left: 16.0, right: 8.0),
 
-      //PRIMEIRO ÍCONE - CONTA//
+      // Perfil
       icon: Icon(Icons.person, color: Colors.white, size: 40),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => PerfilPagina()));
       },),
       
-      //SEGUNDO ÍCONE - LISTA (MENU INTERATIVO)//
+      // Menu lateral
         actions: [
           IconButton(
             padding: EdgeInsets.only(right: 16.0, left: 8.0),
@@ -96,14 +98,14 @@ class _SuporteState extends State<Suporte> {
                   TextButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => BolosPagina()));}, child: Text('Agendar pedido', style: TextStyle(fontSize: 22, decoration: TextDecoration.none, color: Colors.white))),
                   TextButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Suporte()));}, child: Text('Suporte', style: TextStyle(fontSize: 22, decoration: TextDecoration.none, color: Colors.white))),],),),
 
-        // IMAGEM DECORATIVA (BOLO) //
+        // bolo decorativo
                   SizedBox(height: 16),
 
                   Opacity(opacity: 0.8,child: Image.asset('assets/images/bolo.png', width: 250, height: 250),),
 
                   SizedBox(height: 16),
 
-        // BOTÃO - ACESSAR CONTA //
+        // botão de acessar conta
         Container(width: MediaQuery.of(context).size.width * 0.85,padding: EdgeInsets.symmetric(vertical: 10),decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(10),),child: 
         TextButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => PerfilPagina()));},
 
@@ -114,7 +116,7 @@ class _SuporteState extends State<Suporte> {
           color: Colors.pink.shade50,
           image: DecorationImage(
             opacity: 0.3,
-            image: AssetImage('assets/images/confetti.png'),
+            image: AssetImage('assets/images/confetti.png'), // decoração da caixa de menu
             fit: BoxFit.cover,
           ),
         ),
@@ -152,7 +154,7 @@ class _SuporteState extends State<Suporte> {
 
   SizedBox(height: 40),
 
-  // BOTÃO FALE CONOSCO
+  // Botão de fale conosco, o qual abre o Whatsapp
   SizedBox(
     width: 250,
     child: ElevatedButton.icon(
@@ -171,7 +173,7 @@ class _SuporteState extends State<Suporte> {
 
   SizedBox(height: 15),
 
-  // BOTÃO SOBRE NÓS
+  // Botão sobre nós, falando um breve resumo da empresa
   SizedBox(
     width: 250,
     child: ElevatedButton.icon(
@@ -217,7 +219,7 @@ class _SuporteState extends State<Suporte> {
 
   SizedBox(height: 15),
 
-  // BOTÃO ENDEREÇO
+  // Botão de endereço, abre o Google Maps
   SizedBox(
     width: 250,
     child: ElevatedButton.icon(
