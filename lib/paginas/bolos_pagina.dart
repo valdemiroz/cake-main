@@ -28,11 +28,13 @@ class _BolosPaginaState extends State<BolosPagina> {
 
   Map<String, List<String>> _opcoes = {};
 
-  // ── Core cake selections ──────────────────────────────────────────────────
+  // Itens de seleção do banco de dados ─
   String? _tipo, _tamanho, _sabor, _cobertura, _recheio;
+
+  // Andares (quando um bolo possui tal função)
   int?    _nivelAndares;
 
-  // ── Extras (outros) — multi-select ───────────────────────────────────────
+  // Outros itens
   final Set<String> _outrosSelecionados = {};
   List<Map<String, String>> _outrosItens = [];
 
@@ -40,15 +42,16 @@ class _BolosPaginaState extends State<BolosPagina> {
   bool _enviando = false;
   List<XFile> _imagensObservacoes = [];
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
+  // Lógica do bolo de andar - caixa
   bool get _ehBoloDeAndar =>
       _tipo != null && _catalogoService.isBoloDeAndar(_tipo!);
-
+  
+// Preços padronizados
   static const Map<String, double> _precosFallback = {
-    'Pequeno (15cm)': 80.0,
-    'Médio (20cm)':  120.0,
-    'Grande (25cm)': 180.0,
-    'Festa (30cm)':  250.0,
+    'Pequeno (15cm)': 25.0,
+    'Médio (20cm)':  30.0,
+    'Grande (25cm)': 45.0,
+    'Festa (30cm)':  85.0,
   };
 
   double _precoDoItem(String categoria, String? nome) {
@@ -81,7 +84,6 @@ class _BolosPaginaState extends State<BolosPagina> {
   
   get onTap => null;
 
-  // ── Lifecycle ─────────────────────────────────────────────────────────────
   @override
   void initState() {
     super.initState();
@@ -106,8 +108,7 @@ class _BolosPaginaState extends State<BolosPagina> {
       _loading     = false;
     });
   }
-
-  // ── Toggle helpers ────────────────────────────────────────────────────────
+  
   void _toggle(String? current, String value, void Function(String?) setter) {
     setState(() => setter(current == value ? null : value));
   }
@@ -122,7 +123,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     });
   }
 
-  // ── Image handling ────────────────────────────────────────────────────────
+  // Adicionar imagens em observações para customizar (Se o bolo tiver tal função)
   bool _podeAdicionarImagem() =>
       _tipo != null && _catalogoService.podeUsarImagens(_tipo!);
 
@@ -150,7 +151,6 @@ class _BolosPaginaState extends State<BolosPagina> {
           .showSnackBar(SnackBar(content: Text('Erro ao selecionar imagem: $e')));
     }
   }
-
   void _removerImagem(int index) =>
       setState(() => _imagensObservacoes.removeAt(index));
 
@@ -172,7 +172,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     return caminhos;
   }
 
-  // ── Info dialog ───────────────────────────────────────────────────────────
+  // Informação (botão de "?" ao lado)
   void _mostrarInfo(String chave, String item) {
     final lista = _catalogoService.getOpcoesComDescricao()[chave] ?? [];
     Map<String, String>? encontrado;
@@ -204,7 +204,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Order flow ────────────────────────────────────────────────────────────
+  // Lógica de pedido (Precisa marcar todas as caixas)
   Future<void> _pedir() async {
     if (_ehBoloDeAndar && _nivelAndares == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -224,7 +224,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     _mostrarFormasPagamento(usuario);
   }
 
-  // ── Helper: build the order ───────────────────────────────────────────────
+  // Confirmar pedido, endereço de entrega e pagamento 
   Future<void> _confirmarPedido({
     required Map<String, dynamic> usuario,
     required String formaPagamento,
@@ -238,6 +238,8 @@ class _BolosPaginaState extends State<BolosPagina> {
     afterPop();
     setState(() => _enviando = true);
     final imagensSalvas = await _salvarImagensLocalmente();
+
+    // Registra estes dados do usuário no pedido
     await _pedidosService.criarPedido(
   usuarioEmail: usuario['email'],
   nomeCliente: usuario['nome'] ?? '',
@@ -261,7 +263,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     _confirmacao();
   }
 
-  // ── Payment dialogs ───────────────────────────────────────────────────────
+  // Formas de pagamento
   void _mostrarFormasPagamento(Map<String, dynamic> usuario) {
     showDialog(
       context: context,
@@ -280,6 +282,8 @@ class _BolosPaginaState extends State<BolosPagina> {
             content: SingleChildScrollView(
   child: Column(
     mainAxisSize: MainAxisSize.min,
+    
+    // Endereçamento exigido em todas as formas de pagamento
     children: [
               TextField(
                 controller: _enderecoCtrl,
@@ -576,7 +580,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Small UI helpers ──────────────────────────────────────────────────────
+  // Itens internos no menu do cartão
   Widget _cartaoTipoBtn(
       String label, String? selecionado, void Function(String) onTap) {
     final sel = selecionado == label;
@@ -664,7 +668,7 @@ class _BolosPaginaState extends State<BolosPagina> {
       ),
     );
   }
-
+// Exigência de login para prosseguir pedido
   void _loginRequired() {
     showDialog(
       context: context,
@@ -688,7 +692,7 @@ class _BolosPaginaState extends State<BolosPagina> {
       ),
     );
   }
-
+// Confirmar (caso logado e confirmado o pedido)
   void _confirmacao() {
     final extrasTexto = _outrosSelecionados.isNotEmpty
         ? '\nExtras: ${_outrosSelecionados.join(', ')}'
@@ -726,7 +730,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Build ─────────────────────────────────────────────────────────────────
+  // corpo da página
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -734,14 +738,13 @@ class _BolosPaginaState extends State<BolosPagina> {
       body: _loading
           ? const Center(child: CircularProgressIndicator(color: Colors.pink))
           : Stack(children: [
-              // Background
+              // Fundo como um caderno quase transparente
               Positioned.fill(
                 child: Center(
                   child: Image.asset('assets/images/caderno.png',
                       fit: BoxFit.contain),
                 ),
               ),
-              // Scrollable content
               Container(
                 color: Colors.pink.shade50.withOpacity(0.85),
                 child: SingleChildScrollView(
@@ -761,11 +764,11 @@ class _BolosPaginaState extends State<BolosPagina> {
                       ),
                       const SizedBox(height: 24),
 
-                      // ── Cake sections ────────────────────────────────────
+                      // Criação do bolo
                       _secao('TIPO DE BOLO', 'tipos',
                           (v) => _toggle(_tipo, v, (x) => _tipo = x), _tipo),
 
-                      // Andares (only when tipo is multi-tier)
+                      // Andares (apenas quando a opção é marcada em adm.dart em um bolo)
                       if (_ehBoloDeAndar)
                         _andaresSection(),
 
@@ -781,7 +784,7 @@ class _BolosPaginaState extends State<BolosPagina> {
                           (v) => _toggle(_recheio, v, (x) => _recheio = x),
                           _recheio),
 
-                      // ── Observation field + image button ─────────────────
+                      // Descrição e foto interna (do botão "?" lateral)
                       const SizedBox(height: 8),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -846,7 +849,7 @@ class _BolosPaginaState extends State<BolosPagina> {
                         ],
                       ),
 
-                      // Selected images gallery
+                      // Permite adicionar imagens nas observações para decorar o bolo (que tiver a função ativa)
                       if (_imagensObservacoes.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text('Imagens adicionadas:',
@@ -904,13 +907,13 @@ class _BolosPaginaState extends State<BolosPagina> {
                         ),
                       ],
 
-                      // ── OUTROS (Extras) section ───────────────────────────
+                      // Extras - itens diversos
                       if (_outrosItens.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         _outrosSection(),
                       ],
 
-                      // ── Price summary ────────────────────────────────────
+                      // Total calculado
                       const SizedBox(height: 20),
                       if (_tamanho != null)
                         Container(
@@ -930,7 +933,7 @@ class _BolosPaginaState extends State<BolosPagina> {
                           ),
                         ),
 
-                      // ── Order button ─────────────────────────────────────
+                      // Botão de realizar pedido
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity, height: 56,
@@ -960,7 +963,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Andares section ───────────────────────────────────────────────────────
+  // Seção de andares (aberta quando um bolo possui tal função ativa)
   Widget _andaresSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -1009,12 +1012,11 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Outros (Extras) section ───────────────────────────────────────────────
+  // Seção de extras (quando possui um item por essa categoria)
   Widget _outrosSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Divider with label
         Row(children: [
           Expanded(child: Divider(color: Colors.pink.shade200, thickness: 1)),
           Padding(
@@ -1037,7 +1039,7 @@ class _BolosPaginaState extends State<BolosPagina> {
         ),
         const SizedBox(height: 12),
 
-        // Cards grid
+        // Organização do card "outros"
         Wrap(
           spacing: 10, runSpacing: 10,
           alignment: WrapAlignment.center,
@@ -1077,7 +1079,7 @@ class _BolosPaginaState extends State<BolosPagina> {
                         ],
                 ),
                 child: Column(children: [
-                  // Image or placeholder
+                  // Imagem (quando "outros" possui)
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(12)),
@@ -1095,7 +1097,7 @@ class _BolosPaginaState extends State<BolosPagina> {
                                 color: Colors.pink.shade300, size: 40),
                           ),
                   ),
-                  // Text content
+                  // Texto interno ("outros")
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Column(
@@ -1151,7 +1153,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── Section builder (tipos / tamanhos / sabores / etc.) ───────────────────
+  // Montagem do bolo geral (botões ativos)
   Widget _secao(
     String titulo,
     String chave,
@@ -1224,7 +1226,7 @@ class _BolosPaginaState extends State<BolosPagina> {
     );
   }
 
-  // ── AppBar ────────────────────────────────────────────────────────────────
+  // Barra do aplicativo (topo)
   AppBar _appBar(BuildContext context) => AppBar(
         backgroundColor: Colors.pink,
         toolbarHeight: 80, elevation: 5,
@@ -1252,7 +1254,7 @@ class _BolosPaginaState extends State<BolosPagina> {
         ],
       );
 
-  // ── Side menu ─────────────────────────────────────────────────────────────
+  // Menu lateral
   void _menu(BuildContext context) => showGeneralDialog(
         context: context,
         barrierDismissible: true,
