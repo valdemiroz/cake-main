@@ -1,12 +1,12 @@
 # Guia de Instalação - Cake Main
 
-## 📋 Informações do Projeto
+## Informações do Projeto
 
 **Descrição:** Esse é o primeiro aplicativo que desenvolvemos com nossos colegas (e apoio de IA) no projeto de TI, na escola QI, Canoas.
 
 ---
 
-## 👥 Autores
+## Autores
 
 | Nome | E-mail | Função |
 |------|--------|--------|
@@ -19,7 +19,7 @@
 
 ---
 
-## 🛠️ Pré-requisitos
+## Pré-requisitos
 
 ### Para Android
 
@@ -62,14 +62,14 @@
 
 ---
 
-## 📱 Instalação para Android
+## Instalação para Android
 
 ### Método 1: Instalação via APK (Recomendado para Usuários)
 
 #### Passo 1: Ativar Instalação de Fontes Desconhecidas
 1. Vá para **Configurações** > **Segurança** (ou **Privacidade**)
 2. Procure por **"Instalar aplicativos desconhecidos"** ou **"Fontes desconhecidas"**
-3. Selecione seu navegador ou gerenciador de arquivos e marque a opção (Não se preocupe com vírus, pois o App NÃO CONTÉM; é comum para todos os dispositivos desconfiarem de apps recém-criados.
+3. Selecione seu navegador ou gerenciador de arquivos e marque a opção (Não se preocupe com vírus, pois o App NÃO CONTÉM; é comum para todos os dispositivos desconfiarem de apps recém-criados).
 
 #### Passo 2: Baixar o APK
 1. Acesse o repositório no GitHub: https://github.com/valdemiroz/cake-main
@@ -116,7 +116,7 @@ adb shell am start -n com.example.cake/.MainActivity
 
 ---
 
-## 💻 Instalação para Computador (Desenvolvimento)
+## Instalação para Computador (Desenvolvimento)
 
 ### Passo 1: Clonar o Repositório
 
@@ -200,7 +200,7 @@ flutter build appbundle --release
 
 ---
 
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 cake-main/
@@ -222,37 +222,7 @@ cake-main/
 
 ---
 
-## 🔧 Comandos Úteis
-
-```bash
-# Analisar o código
-flutter analyze
-
-# Executar testes
-flutter test
-
-# Limpar cache
-flutter clean
-
-# Atualizar dependências
-flutter pub upgrade
-
-# Gerar documentação
-dartdoc
-
-# Verificar saúde do Flutter
-flutter doctor
-
-# Formatar código
-dart format .
-
-# Lint no código
-flutter lint
-```
-
----
-
-## ❓ Troubleshooting
+## Dúvidas
 
 ### Erro: "Flutter não é reconhecido"
 - Adicione `flutter/bin` ao PATH do seu sistema
